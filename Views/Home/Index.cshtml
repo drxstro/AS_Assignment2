@@ -1,0 +1,36 @@
+﻿@model Asn2_AS.Models.User
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Ace Job Agency!</h1>
+    <p>Learn about building Web apps with ASP.NET Core.</p>
+
+    <!-- Display user information -->
+    <h2>User Information</h2>
+    <ul>
+        <li><strong>First Name:</strong> @Model.FirstName</li>
+        <li><strong>Last Name:</strong> @Model.LastName</li>
+        <li><strong>Gender:</strong> @Model.Gender</li>
+        <li><strong>Email:</strong> @Model.Email</li>
+        <li><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</li>
+        <li><strong>Who Am I:</strong> @Model.WhoAmI</li>
+        <li><strong>Encrypted NRIC:</strong> @Model.EncryptedNRIC</li>
+    </ul>
+
+    <!-- Logout button, only displayed if the user is authenticated -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form method="post" asp-action="Logout" asp-controller="Account">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+
+        <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-warning">Change Password</a>
+    }
+    else
+    {
+        <a href="@Url.Action("Login", "Account")">Your session has ended. Please log in again.</a>
+    }
+</div>

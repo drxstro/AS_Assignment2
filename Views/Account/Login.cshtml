@@ -1,0 +1,60 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+<form asp-action="Login" method="post">
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" type="email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" type="password" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <input asp-for="RememberMe" />
+        <label asp-for="RememberMe"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+
+    <!-- Add the reCAPTCHA v3 API script -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeRWtMqAAAAAKoOeQJuHEh0YTVdq8ZuEg3nvq2U"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LeRWtMqAAAAAKoOeQJuHEh0YTVdq8ZuEg3nvq2U', { action: 'login' }).then(function (token) {
+                console.log("reCAPTCHA Token:", token);
+                let recaptchaResponse = document.createElement('input');
+                recaptchaResponse.type = 'hidden';
+                recaptchaResponse.name = 'gRecaptchaResponse';
+                recaptchaResponse.value = token;
+                document.forms[0].appendChild(recaptchaResponse);
+            });
+        });
+    </script>
+
+</form>
+
+<div>
+    <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Register here</a></p>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@if (ViewData.ModelState?.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
